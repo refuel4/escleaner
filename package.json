@@ -1,0 +1,21 @@
+{
+  "name": "escleaner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist",
+    "watch": "babel -w src -d dist",
+    "execute": "node dist/index.js"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "elasticsearch": "^13.0.0",
+    "http-aws-es": "^1.1.3",
+    "moment": "^2.18.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0"
+  }
+}
