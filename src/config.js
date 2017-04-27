@@ -1,5 +1,9 @@
 export function getEnvVarOrError(env, variable) {
-    return (!!env[variable]) ? env[variable] : new Error('variable ' + variable + ' is not set');
+    if (!!env[variable]) {
+        return env[variable];
+    } else {
+        throw new Error('variable ' + variable + ' is not set')
+    }
 }
 
 export const host = getEnvVarOrError(process.env, 'ES_SERVER');
@@ -11,7 +15,6 @@ export const storageSize = parseFloat(getEnvVarOrError(process.env, 'STORAGE_SIZ
 export const storageWarning = parseFloat(process.env.STORAGE_THRESHOLD || '20');
 export const dayBack = parseInt(process.env.DAY_BACK || '3');
 export const segmentKey = getEnvVarOrError(process.env, 'SEGMENT_KEY');
-
 
 
 export const tagsToPurge = [
