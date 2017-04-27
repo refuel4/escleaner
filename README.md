@@ -44,8 +44,16 @@ POST logstash-2017.04.23/_delete_by_query
 
 Finally the result of the purge is sent to segment
 
+## How to develop
+
+Run the watcher and develop in `src`
+
+```bash
+npm run watch
+```
 
 ## How to build the JavaScript
+
 ```bash
 npm run build
 ```
@@ -78,4 +86,5 @@ docker push 272529203662.dkr.ecr.us-west-1.amazonaws.com/escleaner:latest
  - DAY_BACK: how many days back is the day to purge (default: 3)
  - STORAGE_SIZE: Elastic Search storage size in Gb (no default)
  - STORAGE_THRESHOLD: Will send a notification if storage left is less than value in % (default: 20)
+ - SEGMENT_KEY: Segment writeKey
 

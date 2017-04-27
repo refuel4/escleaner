@@ -1,4 +1,4 @@
-function getEnvVarOrError(env, variable) {
+export function getEnvVarOrError(env, variable) {
     return (!!env[variable]) ? env[variable] : new Error('variable ' + variable + ' is not set');
 }
 
@@ -10,6 +10,8 @@ export const secretKey = getEnvVarOrError(process.env, 'AWS_SECRET_KEY');
 export const storageSize = parseFloat(getEnvVarOrError(process.env, 'STORAGE_SIZE')) * 1024;    // get the size in Mb
 export const storageWarning = parseFloat(process.env.STORAGE_THRESHOLD || '20');
 export const dayBack = parseInt(process.env.DAY_BACK || '3');
+export const segmentKey = getEnvVarOrError(process.env, 'SEGMENT_KEY');
+
 
 
 export const tagsToPurge = [

@@ -9,6 +9,7 @@
     "execute": "node dist/index.js"
   },
   "dependencies": {
+    "analytics-node": "^2.4.0",
     "co": "^4.6.0",
     "elasticsearch": "^13.0.0",
     "http-aws-es": "^1.1.3",
