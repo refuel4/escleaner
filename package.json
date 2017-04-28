@@ -7,8 +7,8 @@
     "build": "babel src -d dist",
     "watch": "babel -w src -d dist",
     "execute": "node dist/index.js",
-    "test": "source test/.env && mocha --compilers js:babel-core/register",
-    "watch_test": "source test/.env && mocha -w --compilers js:babel-core/register"
+    "test": "source test/env && mocha --compilers js:babel-core/register",
+    "watch_test": "source test/env && mocha -w --compilers js:babel-core/register"
   },
   "dependencies": {
     "analytics-node": "^2.4.0",
