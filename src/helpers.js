@@ -1,5 +1,4 @@
 import moment from 'moment';
-import {storageWarningTrack, tagPurgedTrack} from './analytics';
 import {storageSize, storageWarning, dayBack} from './config';
 
 /**
@@ -18,25 +17,28 @@ export function getIndices(client) {
 
 /**
  * Get the date from and index
- * @param index
+ * @param {string} index
  * @returns {*|moment.Moment}
  */
 export function getDateFromIndex(index) {
     if (!index.startsWith('logstash')) {
-        throw new Error('extractDateFromIndex: not an index')
+        throw new Error('getDateFromIndex: not an index')
     }
     return moment(index.replace('logstash-', ''), 'YYYY.MM.DD');
 }
 
 /**
  * Get indices prefixed as `logstash` and add `date` key with Moment matching the index date
- * @param indices
+ * @param {Array} indices
  * @returns {*}
  */
 export function getLogStashIndices(indices) {
     return indices.reduce((acc, item) => {
         if (item.index.startsWith('logstash')) {
-            return acc.concat(Object.assign({}, item, {date: getDateFromIndex(item.index), 'store.size': parseInt(item['store.size'])}))
+            return acc.concat(Object.assign({}, item, {
+                date: getDateFromIndex(item.index),
+                'store.size': parseInt(item['store.size'])
+            }))
         } else return acc;
     }, []);
 }
@@ -70,8 +72,8 @@ export function getIndexToPurge(indices) {
 /**
  * Elastic Search delete by tag
  * @param {object} client - Elastic Search Client
- * @param index - Elastic Search index name
- * @param tag - Elastic Search tag name
+ * @param {string} index - Elastic Search index name
+ * @param {string} tag - Elastic Search tag name
  * @returns {*}
  */
 export function deleteByTag(client, index, tag) {
@@ -90,30 +92,33 @@ export function deleteByTag(client, index, tag) {
 /**
  * Check volume size left and notify segment if reaches threshold
  * @param {number} indexesSize - Aggregated size of all ES indices
+ * @param {function} callback
  * @returns {*}
  */
-export function checkVolumeSizeLeft(indexesSize) {
+export function checkVolumeSizeLeft(indexesSize, callback) {
     const threshold = storageSize * ((100 - storageWarning) / 100);
     if (indexesSize > threshold) {
-        storageWarningTrack({storageSize, indexesSize})
+        callback({storageSize, indexesSize});
     }
 }
 
 /**
  * Purge generator
  * @param {object} client - Elastic Search Client
- * @param index - Elastic Search index name
- * @param tags - Tags to purge
+ * @param {string} index - Elastic Search index name
+ * @param {Array} tags - Tags to purge
+ * @param {function} deleteFn
+ * @param {function} trackFn
  * @returns {*}
  */
-export function* purge(client, index, tags) {
+export function* purge(client, index, tags, deleteFn, trackFn) {
     let [tag] = tags;
     if (tag) {
         console.log(`Purging ${index} for tag ${tag}`);
-        const response = yield deleteByTag(client, index, tag);
+        const response = yield deleteFn(client, index, tag);
         // send response to segment
-        tagPurgedTrack(index, tag, response);
+        trackFn(index, tag, response);
         // recurse
-        yield* purge(client, index, tags.slice(1))
+        yield* purge(client, index, tags.slice(1), deleteFn, trackFn)
     }
 }

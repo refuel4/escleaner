@@ -1,7 +1,7 @@
 import "babel-polyfill";
 import co from 'co';
 import client from './client';
-import {tagsPurgedErrorTrack} from './analytics';
+import {tagsPurgedErrorTrack, storageWarningTrack, tagPurgedTrack} from './analytics';
 import {purge} from './helpers';
 import {tagsToPurge} from './config';
 import {
@@ -9,6 +9,7 @@ import {
     getTotalVolume,
     getLogStashIndices,
     getIndexToPurge,
+    deleteByTag,
     checkVolumeSizeLeft
 } from './helpers';
 
@@ -21,13 +22,13 @@ co(function*() {
     const sortedIndices = indices.sort((a, b) => b.date.diff(a.date));
     const total = getTotalVolume(sortedIndices);
 
-    checkVolumeSizeLeft(total);
+    checkVolumeSizeLeft(total, storageWarningTrack);
 
     const indexToPurge = getIndexToPurge(sortedIndices);
 
     console.log('index to purge is', indexToPurge.index, 'of size ', indexToPurge['store.size']);
 
-    yield * purge(client, indexToPurge.index, tagsToPurge);
+    yield * purge(client, indexToPurge.index, tagsToPurge, deleteByTag, tagPurgedTrack);
 
 }).catch((err) => {
     console.error('An error has occurred:', err);
