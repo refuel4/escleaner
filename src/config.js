@@ -15,6 +15,7 @@ export const storageSize = parseFloat(getEnvVarOrError(process.env, 'STORAGE_SIZ
 export const storageWarning = parseFloat(process.env.STORAGE_THRESHOLD || '20');
 export const dayBack = parseInt(process.env.DAY_BACK || '3');
 export const segmentKey = getEnvVarOrError(process.env, 'SEGMENT_KEY');
+export const requestTimeout = parseInt(process.env.REQUEST_TIMEOUT || '10') * 60000;
 
 
 export const tagsToPurge = [

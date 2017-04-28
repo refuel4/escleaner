@@ -80,8 +80,8 @@ docker build -t escleaner .
 
 ## How to build the docker image locally
 
-- copy `docker.env.default` to `docker.env`
-- fill up the missing variables in `docker.env`
+- copy `.env.default` to `.env`
+- fill up the missing variables in `.env`
 - run the script `docker_run.sh`
 
 ## Environment variables
@@ -95,4 +95,5 @@ docker build -t escleaner .
  - STORAGE_SIZE: Elastic Search storage size in Gb (no default)
  - STORAGE_THRESHOLD: Will send a notification if storage left is less than value in % (default: 20)
  - SEGMENT_KEY: Segment writeKey
+ - REQUEST_TIMEOUT: Elastic Search client timeout in minutes (default: 10 )
 
