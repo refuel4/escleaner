@@ -80,7 +80,7 @@ docker build -t escleaner .
 
 ## How to build the docker image locally
 
-- copy `.env.default` to `.env`
+- copy `env.default` to `.env`
 - fill up the missing variables in `.env`
 - run the script `docker_run.sh`
 
