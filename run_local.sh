@@ -5,7 +5,7 @@
 set -e
 
 # Find the directory of the script and cd there
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd `dirname "${BASH_SOURCE[0]}"`
 
 if `type yarn 2>&1 > /dev/null`; then
 	PKG_MGR="yarn"
