@@ -1,5 +1,6 @@
 import "babel-polyfill";
 import co from 'co';
+import moment from 'moment';
 import client from './client';
 import {tagsPurgedErrorTrack, storageWarningTrack, tagPurgedTrack} from './analytics';
 import {purge} from './helpers';
@@ -26,7 +27,7 @@ co(function*() {
 
     const indexToPurge = getIndexToPurge(sortedIndices);
 
-    console.log('index to purge is', indexToPurge.index, 'of size ', indexToPurge['store.size']);
+    console.log(`[${moment().toISOString()}] Index to purge is ${indexToPurge.index} of size ${indexToPurge['store.size']}`);
 
     yield * purge(client, indexToPurge.index, tagsToPurge, deleteByTag, tagPurgedTrack);
 
