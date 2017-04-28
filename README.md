@@ -44,18 +44,32 @@ POST logstash-2017.04.23/_delete_by_query
 
 Finally the result of the purge is sent to segment
 
+## Dependencies
+
+With `yarn`:
+
+```
+> yarn
+```
+
+With `npm`:
+
+```
+> npm i
+```
+
 ## How to develop
 
 Run the watcher and develop in `src`
 
 ```bash
-npm run watch
+yarn run watch
 ```
 
-## How to build the JavaScript
+## How to build 
 
 ```bash
-npm run build
+yarn run build
 ```
 
 ## How to build the docker image
@@ -64,17 +78,11 @@ npm run build
 docker build -t escleaner .
 ```
 
-## How to push to ECR
+## How to build the docker image locally
 
-tag first:
-```bash
-docker tag escleaner:latest 272529203662.dkr.ecr.us-west-1.amazonaws.com/escleaner:latest
-```
-
-push to ECR
-```bash
-docker push 272529203662.dkr.ecr.us-west-1.amazonaws.com/escleaner:latest
-```
+- copy `docker.env.default` to `docker.env`
+- fill up the missing variables in `docker.env`
+- run the script `docker_run.sh`
 
 ## Environment variables
 
